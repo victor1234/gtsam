@@ -297,7 +297,7 @@ static Vector9 vec3(const Matrix3& R) {
 }
 
 // so<3> generators
-static std::vector<Matrix3> G3({SO3::Hat(Vector3::Unit(0)),
+static std::vector<Matrix3, Eigen::aligned_allocator<Matrix3>> G3({SO3::Hat(Vector3::Unit(0)),
                                 SO3::Hat(Vector3::Unit(1)),
                                 SO3::Hat(Vector3::Unit(2))});
 
