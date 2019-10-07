@@ -87,7 +87,7 @@ protected:
    * both the function evaluation and its derivative(s) in H.
    */
   virtual Vector unwhitenedError(const Values& x,
-                                 boost::optional<std::vector<Matrix>&> H = boost::none) const {
+                                 boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if (H) {
       const T value = expression_.valueAndDerivatives(x, keys_, dims_, *H);
       // NOTE(hayk): Doing the reverse, AKA Local(measured_, value) is not correct here
@@ -235,7 +235,7 @@ class ExpressionFactor2 : public ExpressionFactor<T> {
     Values values;
     values.insert(this->keys_[0], a1);
     values.insert(this->keys_[1], a2);
-    std::vector<Matrix> H(2);
+    std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(2);
     Vector error = this->unwhitenedError(values, H);
     if (H1) (*H1) = H[0];
     if (H2) (*H2) = H[1];

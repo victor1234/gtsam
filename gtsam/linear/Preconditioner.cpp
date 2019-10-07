@@ -132,7 +132,7 @@ void BlockJacobiPreconditioner::build(
   dims_ = keyInfo.colSpec();
 
   /* prepare the buffer of block diagonals */
-  std::vector<Matrix> blocks; blocks.reserve(n);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> blocks; blocks.reserve(n);
 
   /* allocate memory for the factorization of block diagonals */
   size_t nnz = 0;

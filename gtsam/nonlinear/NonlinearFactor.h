@@ -218,7 +218,7 @@ public:
    * both the function evaluation and its derivative(s) in H.
    */
   virtual Vector unwhitenedError(const Values& x,
-      boost::optional<std::vector<Matrix>&> H = boost::none) const = 0;
+      boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const = 0;
 
   /**
    * Vector of errors, whitened
@@ -305,7 +305,7 @@ public:
   /** Calls the 1-key specific version of evaluateError, which is pure virtual
    *  so must be implemented in the derived class.
    */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       const X& x1 = x.at<X>(keys_[0]);
       if(H) {
@@ -379,7 +379,7 @@ public:
 
   /** Calls the 2-key specific version of evaluateError, which is pure virtual
    * so must be implemented in the derived class. */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       const X1& x1 = x.at<X1>(keys_[0]);
       const X2& x2 = x.at<X2>(keys_[1]);
@@ -457,7 +457,7 @@ public:
 
   /** Calls the 3-key specific version of evaluateError, which is pure virtual
    * so must be implemented in the derived class. */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       if(H)
         return evaluateError(x.at<X1>(keys_[0]), x.at<X2>(keys_[1]), x.at<X3>(keys_[2]), (*H)[0], (*H)[1], (*H)[2]);
@@ -537,7 +537,7 @@ public:
 
   /** Calls the 4-key specific version of evaluateError, which is pure virtual
    * so must be implemented in the derived class. */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       if(H)
         return evaluateError(x.at<X1>(keys_[0]), x.at<X2>(keys_[1]), x.at<X3>(keys_[2]), x.at<X4>(keys_[3]), (*H)[0], (*H)[1], (*H)[2], (*H)[3]);
@@ -621,7 +621,7 @@ public:
 
   /** Calls the 5-key specific version of evaluateError, which is pure virtual
    * so must be implemented in the derived class. */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       if(H)
         return evaluateError(x.at<X1>(keys_[0]), x.at<X2>(keys_[1]), x.at<X3>(keys_[2]), x.at<X4>(keys_[3]), x.at<X5>(keys_[4]), (*H)[0], (*H)[1], (*H)[2], (*H)[3], (*H)[4]);
@@ -709,7 +709,7 @@ public:
 
   /** Calls the 6-key specific version of evaluateError, which is pure virtual
    * so must be implemented in the derived class. */
-  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const {
+  virtual Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     if(this->active(x)) {
       if(H)
         return evaluateError(x.at<X1>(keys_[0]), x.at<X2>(keys_[1]), x.at<X3>(keys_[2]), x.at<X4>(keys_[3]), x.at<X5>(keys_[4]), x.at<X6>(keys_[5]), (*H)[0], (*H)[1], (*H)[2], (*H)[3], (*H)[4], (*H)[5]);

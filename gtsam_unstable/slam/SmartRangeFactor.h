@@ -144,7 +144,7 @@ class SmartRangeFactor: public NoiseModelFactor {
    * Error function *without* the NoiseModel, \f$ z-h(x) \f$.
    */
   virtual Vector unwhitenedError(const Values& x,
-      boost::optional<std::vector<Matrix>&> H = boost::none) const {
+      boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
     size_t n = size();
     if (n < 3) {
       if (H) {

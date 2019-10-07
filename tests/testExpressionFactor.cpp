@@ -331,7 +331,7 @@ TEST(ExpressionFactor, Compose1) {
   values.insert(2, Rot3());
 
   // Check unwhitenedError
-  std::vector<Matrix> H(2);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(2);
   Vector actual = f.unwhitenedError(values, H);
   EXPECT( assert_equal(I_3x3, H[0],1e-9));
   EXPECT( assert_equal(I_3x3, H[1],1e-9));
@@ -360,7 +360,7 @@ TEST(ExpressionFactor, compose2) {
   values.insert(1, Rot3());
 
   // Check unwhitenedError
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   Vector actual = f.unwhitenedError(values, H);
   EXPECT_LONGS_EQUAL(1, H.size());
   EXPECT( assert_equal(2*I_3x3, H[0],1e-9));
@@ -389,7 +389,7 @@ TEST(ExpressionFactor, compose3) {
   values.insert(3, Rot3());
 
   // Check unwhitenedError
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   Vector actual = f.unwhitenedError(values, H);
   EXPECT_LONGS_EQUAL(1, H.size());
   EXPECT( assert_equal(I_3x3, H[0],1e-9));
@@ -432,7 +432,7 @@ TEST(ExpressionFactor, composeTernary) {
   values.insert(3, Rot3());
 
   // Check unwhitenedError
-  std::vector<Matrix> H(3);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(3);
   Vector actual = f.unwhitenedError(values, H);
   EXPECT_LONGS_EQUAL(3, H.size());
   EXPECT( assert_equal(I_3x3, H[0],1e-9));

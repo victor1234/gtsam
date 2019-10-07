@@ -130,7 +130,7 @@ void Expression<T>::print(const std::string& s) const {
 
 template<typename T>
 T Expression<T>::value(const Values& values,
-    boost::optional<std::vector<Matrix>&> H) const {
+    boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H) const {
 
   if (H) {
     // Call private version that returns derivatives in H
@@ -158,7 +158,7 @@ size_t Expression<T>::traceSize() const {
 template<typename T>
 T Expression<T>::valueAndDerivatives(const Values& values,
     const KeyVector& keys, const FastVector<int>& dims,
-    std::vector<Matrix>& H) const {
+    std::vector<Matrix, Eigen::aligned_allocator<Matrix>>& H) const {
 
   // H should be pre-allocated
   assert(H.size()==keys.size());

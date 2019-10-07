@@ -129,7 +129,7 @@ namespace gtsam {
     }
 
     /// Evaluate error h(x)-z and optionally derivatives
-    Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix>&> H = boost::none) const{
+    Vector unwhitenedError(const Values& x, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const{
 
       Vector a;
       return a;

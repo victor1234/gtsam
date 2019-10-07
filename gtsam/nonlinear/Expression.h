@@ -156,7 +156,7 @@ public:
    * Notes: this is not terribly efficient, and H should have correct size.
    * The order of the Jacobians is same as keys in either keys() or dims()
    */
-  T value(const Values& values, boost::optional<std::vector<Matrix>&> H =
+  T value(const Values& values, boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H =
       boost::none) const;
 
   /**
@@ -188,7 +188,7 @@ protected:
 
   /// private version that takes keys and dimensions, returns derivatives
   T valueAndDerivatives(const Values& values, const KeyVector& keys,
-      const FastVector<int>& dims, std::vector<Matrix>& H) const;
+      const FastVector<int>& dims, std::vector<Matrix, Eigen::aligned_allocator<Matrix>>& H) const;
 
   /// trace execution, very unsafe
   T traceExecution(const Values& values, internal::ExecutionTrace<T>& trace,

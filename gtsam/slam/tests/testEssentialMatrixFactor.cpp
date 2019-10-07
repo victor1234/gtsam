@@ -131,7 +131,7 @@ TEST(EssentialMatrixFactor, ExpressionFactor) {
     // Check evaluation
     Vector expected(1);
     expected << 0;
-    vector<Matrix> Hactual(1);
+    vector<Matrix, Eigen::aligned_allocator<Matrix>> Hactual(1);
     Vector actual = factor.unwhitenedError(values, Hactual);
     EXPECT(assert_equal(expected, actual, 1e-7));
   }
@@ -161,7 +161,7 @@ TEST(EssentialMatrixFactor, ExpressionFactorRotationOnly) {
     // Check evaluation
     Vector expected(1);
     expected << 0;
-    vector<Matrix> Hactual(1);
+    vector<Matrix, Eigen::aligned_allocator<Matrix>> Hactual(1);
     Vector actual = factor.unwhitenedError(values, Hactual);
     EXPECT(assert_equal(expected, actual, 1e-7));
   }

@@ -146,7 +146,7 @@ TEST(Expression, NullaryMethod) {
   LONGS_EQUAL(1, map.size());
 
   // Get value and Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   double actual = norm_.value(values, H);
 
   // Check all
@@ -330,7 +330,7 @@ TEST(Expression, ScalarMultiply) {
   EXPECT(assert_equal(expected, expr.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT(assert_equal(expected, expr.value(values, H)));
   EXPECT(assert_equal(23 * I_3x3, H[0]));
 }
@@ -360,7 +360,7 @@ TEST(Expression, BinarySum) {
   EXPECT(assert_equal(expected, sum_.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT(assert_equal(expected, sum_.value(values, H)));
   EXPECT(assert_equal(I_3x3, H[0]));
 }
@@ -381,7 +381,7 @@ TEST(Expression, TripleSum) {
   EXPECT(assert_equal(expected, sum_.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT(assert_equal(expected, sum_.value(values, H)));
   EXPECT(assert_equal(I_3x3, H[0]));
 }
@@ -404,7 +404,7 @@ TEST(Expression, PlusEqual) {
   EXPECT(assert_equal(expected, sum_.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT(assert_equal(expected, sum_.value(values, H)));
   EXPECT(assert_equal(I_3x3, H[0]));
 }
@@ -422,7 +422,7 @@ TEST(Expression, SumOfUnaries) {
   EXPECT_DOUBLES_EQUAL(12, sum_.value(values), 1e-9);
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT_DOUBLES_EQUAL(12, sum_.value(values, H), 1e-9);
   EXPECT(assert_equal(Vector3(2, 0, 0).transpose(), H[0]));
 }
@@ -445,7 +445,7 @@ TEST(Expression, UnaryOfSum) {
   EXPECT_DOUBLES_EQUAL(sqrt(2), norm_.value(values), 1e-9);
 
   // Check value + Jacobians
-  std::vector<Matrix> H(2);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(2);
   EXPECT_DOUBLES_EQUAL(sqrt(2), norm_.value(values, H), 1e-9);
   EXPECT(assert_equal(0.5 * sqrt(2) * Vector3(1, 1, 0).transpose(), H[0]));
   EXPECT(assert_equal(0.5 * sqrt(2) * Vector3(1, 1, 0).transpose(), H[1]));
@@ -469,7 +469,7 @@ TEST(Expression, WeightedSum) {
   EXPECT(assert_equal(expected, weighted_sum_.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(2);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(2);
   EXPECT(assert_equal(expected, weighted_sum_.value(values, H)));
   EXPECT(assert_equal(17 * I_3x3, H[0]));
   EXPECT(assert_equal(23 * I_3x3, H[1]));
@@ -486,7 +486,7 @@ TEST(Expression, Subtract) {
   EXPECT(expression.keys() == expected_keys);
 
   // Check value + Jacobians
-  std::vector<Matrix> H(2);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(2);
   EXPECT(assert_equal<Vector3>(p - q, expression.value(values, H)));
   EXPECT(assert_equal(I_3x3, H[0]));
   EXPECT(assert_equal(-I_3x3, H[1]));
@@ -507,7 +507,7 @@ TEST(Expression, LinearExpression) {
   EXPECT(assert_equal(expected, linear_.value(values)));
 
   // Check value + Jacobians
-  std::vector<Matrix> H(1);
+  std::vector<Matrix, Eigen::aligned_allocator<Matrix>> H(1);
   EXPECT(assert_equal(expected, linear_.value(values, H)));
   EXPECT(assert_equal(I_3x3, H[0]));
 }

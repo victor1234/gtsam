@@ -209,7 +209,7 @@ SharedDiagonal Gaussian::QR(Matrix& Ab) const {
   return noiseModel::Unit::Create(maxRank);
 }
 
-void Gaussian::WhitenSystem(vector<Matrix>& A, Vector& b) const {
+void Gaussian::WhitenSystem(vector<Matrix, Eigen::aligned_allocator<Matrix>>& A, Vector& b) const {
   for(Matrix& Aj: A) { WhitenInPlace(Aj); }
   whitenInPlace(b);
 }
@@ -241,9 +241,11 @@ Diagonal::Diagonal() :
 }
 
 /* ************************************************************************* */
+__attribute__((no_sanitize("undefined")))
 Diagonal::Diagonal(const Vector& sigmas)
     : Gaussian(sigmas.size()),
       sigmas_(sigmas),
+      // TODO(fan): another division by 0
       invsigmas_(sigmas.array().inverse()),
       precisions_(invsigmas_.array().square()) {
 }
@@ -314,6 +316,7 @@ void Diagonal::WhitenInPlace(Eigen::Block<Matrix> H) const {
 namespace internal {
 // switch precisions and invsigmas to finite value
 // TODO: why?? And, why not just ask s==0.0 below ?
+__attribute__((no_sanitize("undefined")))
 static void fix(const Vector& sigmas, Vector& precisions, Vector& invsigmas) {
   for (Vector::Index i = 0; i < sigmas.size(); ++i)
     if (!std::isfinite(1. / sigmas[i])) {
@@ -643,7 +646,7 @@ void Base::reweight(Vector& error) const {
 }
 
 // Reweight n block matrices with one error vector
-void Base::reweight(vector<Matrix> &A, Vector &error) const {
+void Base::reweight(vector<Matrix, Eigen::aligned_allocator<Matrix>> &A, Vector &error) const {
   if ( reweight_ == Block ) {
     const double w = sqrtWeight(error.norm());
     for(Matrix& Aj: A) {
@@ -950,7 +953,7 @@ void Robust::WhitenSystem(Vector& b) const {
   robust_->reweight(b);
 }
 
-void Robust::WhitenSystem(vector<Matrix>& A, Vector& b) const {
+void Robust::WhitenSystem(vector<Matrix, Eigen::aligned_allocator<Matrix>>& A, Vector& b) const {
   noise_->WhitenSystem(A,b);
   robust_->reweight(A,b);
 }

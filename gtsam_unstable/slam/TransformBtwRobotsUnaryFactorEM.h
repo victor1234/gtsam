@@ -180,7 +180,7 @@ namespace gtsam {
 
     /* ************************************************************************* */
     Vector whitenedError(const Values& x,
-        boost::optional<std::vector<Matrix>&> H = boost::none) const {
+        boost::optional<std::vector<Matrix, Eigen::aligned_allocator<Matrix>>&> H = boost::none) const {
 
       bool debug = true;
 

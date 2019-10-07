@@ -99,7 +99,7 @@ TEST( triangulation, TriangulationFactorStereo ) {
   Values values;
   values.insert(pointKey, landmark);
 
-  vector<Matrix> HActual1(1), HActual2(1);
+  vector<Matrix, Eigen::aligned_allocator<Matrix>> HActual1(1), HActual2(1);
   Vector error1 = factor.unwhitenedError(values, HActual1);
   Vector error2 = eFactor.unwhitenedError(values, HActual2);
   EXPECT(assert_equal(error1, error2));
