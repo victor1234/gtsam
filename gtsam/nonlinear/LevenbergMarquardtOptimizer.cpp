@@ -159,12 +159,27 @@ bool LevenbergMarquardtOptimizer::tryLambda(const GaussianFactorGraph& linear,
       delta.print("delta");
 
     // cost change in the linearized system (old - new)
+    double oldLinearizedError = linear.error(VectorValues::Zero(delta));
     double newlinearizedError = linear.error(delta);
 
-    double linearizedCostChange = currentState->error - newlinearizedError;
     if (verbose)
-      cout << "newlinearizedError = " << newlinearizedError
-           << "  linearizedCostChange = " << linearizedCostChange << endl;
+      cout << "size = " << linear.size() << std::endl;
+      for (auto& factor: linear)
+      {
+        std::cout << factor->error(VectorValues::Zero(delta)) << "\t";
+      }
+      std::cout << endl;
+      for (auto& factor: graph_)
+      {
+        std::cout << factor->error(state_->values) << "\t";
+      }
+      cout << endl;
+
+
+    double linearizedCostChange = oldLinearizedError - newlinearizedError;
+    if (verbose)
+      cout << "oldLinearizedError = " << oldLinearizedError << " newlinearizedError = " << newlinearizedError
+           << " currentState->error = " << currentState->error << "  linearizedCostChange = " << linearizedCostChange << endl;
 
     if (linearizedCostChange >= 0) {  // step is valid
       // update values

@@ -140,11 +140,15 @@ boost::shared_ptr<GaussianFactor> NoiseModelFactor::linearize(
   // Call evaluate error to get Jacobians and RHS vector b
   std::vector<Matrix> A(size());
   Vector b = -unwhitenedError(x, A);
+  Vector b_orig = b;
   check(noiseModel_, b.size());
 
+  std::cout << "unwhitened = " << b << std::endl;
   // Whiten the corresponding system now
   if (noiseModel_)
     noiseModel_->WhitenSystem(A, b);
+
+  std::cout << "Whitened = " << b << std::endl;
 
   // Fill in terms, needed to create JacobianFactor below
   std::vector<std::pair<Key, Matrix> > terms(size());
@@ -155,12 +159,25 @@ boost::shared_ptr<GaussianFactor> NoiseModelFactor::linearize(
 
   // TODO pass unwhitened + noise model to Gaussian factor
   using noiseModel::Constrained;
-  if (noiseModel_ && noiseModel_->isConstrained())
+  if (noiseModel_ && noiseModel_->isConstrained()) {
     return GaussianFactor::shared_ptr(
         new JacobianFactor(terms, b,
             boost::static_pointer_cast<Constrained>(noiseModel_)->unit()));
-  else
+  } else if (noiseModel_ && noiseModel_->isRobust()) {
+    auto robust = boost::static_pointer_cast<noiseModel::Robust>(noiseModel_)->robust();
+    auto noise = boost::static_pointer_cast<noiseModel::Robust>(noiseModel_)->noise();
+
+    noise->whitenInPlace(b_orig);
+    const double e_norm = b_orig.norm();
+    const double w = robust->sqrtWeight(e_norm);
+    const double scale = std::sqrt(robust->residual(e_norm)) / (w * e_norm);
+
+    std::cout <<"residual: " << robust->residual(e_norm) << "e_norm: " << e_norm << ", e: " << b << ", w: " << w << ", scale: " << scale << std::endl;
+
+    return GaussianFactor::shared_ptr(new RobustJacobianFactor(terms, b, scale));
+  } else {
     return GaussianFactor::shared_ptr(new JacobianFactor(terms, b));
+  }
 }
 
 /* ************************************************************************* */

@@ -68,6 +68,9 @@ namespace gtsam {
       /// true if a constrained noise model, saves slow/clumsy dynamic casting
       virtual bool isConstrained() const { return false; } // default false
 
+      /// true if a robust noise model, saves slow/clumsy dynamic casting
+      virtual bool isRobust() const { return false; } // default false
+
       /// true if a unit noise model, saves slow/clumsy dynamic casting
       virtual bool isUnit() const { return false; }  // default false
 
@@ -678,6 +681,9 @@ namespace gtsam {
 
       virtual void print(const std::string& name) const;
       virtual bool equals(const Base& expected, double tol=1e-9) const;
+
+      /// true if a robust noise model, saves slow/clumsy dynamic casting
+      bool isRobust() const override { return true; } // default false
 
       /// Return the contained robust error function
       const RobustModel::shared_ptr& robust() const { return robust_; }

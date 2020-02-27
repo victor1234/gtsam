@@ -23,6 +23,7 @@
 #include <gtsam/nonlinear/Values.h>
 #include <gtsam/linear/NoiseModel.h>
 #include <gtsam/linear/JacobianFactor.h>
+#include <gtsam/linear/RobustJacobianFactor.h>
 #include <gtsam/inference/Factor.h>
 #include <gtsam/base/OptionalJacobian.h>
 
